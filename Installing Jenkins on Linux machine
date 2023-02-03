@@ -1,0 +1,82 @@
+ Installing Jenkins on Linux machine and working.
+
+ Check os details in Linux machine
+ ==>cd /etc
+ ==> cat os-release
+
+
+1. First check java install or not
+2.Install Jenkis
+==>sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+==> sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+==> sudo yum upgrade
+==> sudo yum install jenkins
+==> sudo systemctl daemon-reload
+==> service jenkins start
+==> systemctl enable jenkins
+3. Get initial password
+==> cat /var/lib/jenkins/secrets/initialAdminPassword
+4. start Jenkins on web: <public-ip>:8080
+   ex: https://65.1.92.203:8080/
+   Note- apt-get install kdiff3
+5.You can check the status of the Jenkins service using the command:
+==> sudo systemctl status jenkins
+
+Securing Jenkins:
+1. Login as adimin user
+2. Go to Manage jenkin
+3. Go to Configure Golbal Security
+4. Select Jenknis' own user databas in Security Realm check box
+5. Install Role-based Authorization Strategy plugin from install plugin
+6. Now you'll be able to select Role-Based Strategy in Authorization. Click Apply and save.
+7. Now we're going to create user - Go to Manage User in the Security Section and create user.
+8. Now Go to Manage and Assign Roles and click on Manage Role and add role like Developer, Tester, contractor 
+9. Now click on Assign Role as per user.
+
+Email Notification:
+1.Go to manage Jenkins -> Configure System ->  E-mail Notification,  Extended E-mail Notification
+2. Enter SMTP Server name and default email suffix in E-mail Notification.
+3. Select SSL and Enter SMTP port 465.
+4. Once all data set Email notification then select project where you to integrate email notification.
+5. Go to configure of the project that you select, enter recicients in email-notification
+
+Jenkins master slave:
+1. First create you existing instance image where you have set all softerware reletated jenkins setup.
+2. Click on Action tab on Instance dashboard, you will get Image and template -> Create Image.
+3. Create Slave Instance with My AMIs image.
+4. First go to master instance -> 
+   1. Create user ==> useradd jenkinsadmin
+   2. add password ==> passwd jenkinsadmin
+   3. Give some power to user ==> visudo -> jenkinsadmin ALL=(ALL)    NOPASSWD: ALL
+   4. Now go to cd /etc/ssh ==> open it ==> nano sshd_config -> make it PasswordAuthentication yes ==> 
+   5. Now login with jenkinadmin user ==> su jenkinadmin ==>cd
+   6. Generate key ==> ssh-keygen
+   master - ssh -i "devops-val.pem" ec2-user@ec2-43-204-238-67.ap-south-1.compute.amazonaws.com
+   slave - ssh -i "devops-val.pem" ec2-user@ec2-3-108-66-230.ap-south-1.compute.amazonaws.com
+
+ Create Slave user:
+  1.Create instunt with master instance image
+  2.Create user ==> useradd jenkinsadmin
+  3.add password ==> passwd jenkinsadmin
+  4.Give some power to user ==> visudo -> jenkinsadmin ALL=(ALL)    NOPASSWD: ALL
+  5.Now go to cd /etc/ssh ==> open it ==> nano sshd_config -> make it PasswordAuthentication yes
+  6.Now login with jenkinadmin user ==> su jenkinadmin ==>cd
+5. Now copu the public key to slave node from master 
+   ==>ssh-copy-id username@ip-address (ex ssh-copy-id username@3.108.66.230)
+6. You can connect with slave from master ssh 'jenkinadmin@3.108.66.230'
+
+Now we need to set connection in front(Jenkins web side)
+1. Go to Manage jenkin => Manage nodes and clouds.
+2. Click on new node and give the name of node.
+3. add number of excuter and add remote root directory with slave machine(to find path just write pwd ex: /home/jenkinadmin)
+4. Lunch method is Launch agen via SSH
+5. Select Manually trusted key Verification Strategy in Host Key Verification Strategy
+6. Save and run the job with slave node
+
+Install Build Pipeline plungin:
+1. Goto manage jenkin => Install Build Pipeline 
+
+Pipelin as code:
+ 

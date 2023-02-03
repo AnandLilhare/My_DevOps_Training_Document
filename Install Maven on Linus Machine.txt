@@ -1,0 +1,47 @@
+Install Maven on Linus Machine
+
+1. Search Maven in 5 min in browser
+2. Check if the machine has already install java ex java --varsion. If java varsion is not found then install java by following command.
+   ==> sudo amazon-linux-extras install java-openjdk11
+   ==> find / -name java-11*
+   /usr/lib/jvm/java-11-openjdk-11.0.16.0.8-1.amzn2.0.1.x86_64
+3. Now install maven
+   ==> cd /opt
+   Go to https://maven.apache.org/download.cgi to find latest gz file
+   ==> wget https://dlcdn.apache.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.tar.gz
+   unzip tar file
+   ==> tar  -xvzf apache-maven-3.8.7-bin.tar.gz
+   Delet gz file
+   ==> rm -rf apache-maven-3.8.7-bin.tar.gz
+   Rename gz file with shor name
+   ==>mv apache-maven-3.8.7 maven
+4. Now set path for maven in linus machine
+   => nano .bash_profile
+   Copy the below code on bash profile
+# .bash_profile
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+M2_HOME=/opt/maven
+M2=/opt/maven/bin
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.16.0.8-1.amzn2.0.1.x86_64
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/bin:$JAVA_HOME:$M2_HOME:$M2
+
+export PATH
+ Now excute the bash profile sh file
+ ==> source .bash_profile
+ Now check mvn version
+ ==> mvn --version
+5. Create maven project
+==> mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=dev_maven_project -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
+
+6. Now run this project with maven command.
+==> mvn package
+7.Now run the java file 
+==>java -cp target/dev_maven_project-1.0-SNAPSHOT.jar com.mycompany.app.App
+
