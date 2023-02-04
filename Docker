@@ -1,0 +1,136 @@
+Docker
+
+1. First install docker in machine  ==> yum install docker -y
+2. Check docker version ==> docker --version
+3. Check docker all command ==> docker --help
+4. To check status of docker services ==> service docker status
+5. To start docker services ==> service docker start
+6. How to install image form docker hub ==> docker pull nginx:1.23.3-alpine
+7. Check docker image ==> docker images, ==>docker image ls
+8. To download latest image ==> docker pull nginx:latest
+9. To check how many docker process is running ==> docker ps -a
+10 How to run image
+   ==> docker run --name first-container -d nginx:latest
+   -d --> de-attaching
+   --name --> name of container
+11.You can start and stop container
+   ==> docker start 9c4316d707ac
+   ==> docker stop 9c4316d707ac
+12. You can remove the container
+    First need to stop that container and use following command.
+   ==> docker rm 9c4316d707ac
+   if you try to remove running container than you'll need to write below command.
+   ==> docker rm -f 9c4316d707ac
+13. If you want to remove docker images ==>docker rmi a99a39d070bf
+14. To give port to the container => docker run --name first-container -p 8080:80 -d nginx:perl
+15. You'll need to update inbound rule for port 80 in your aws instance.
+
+Docker Volumes
+1. To get all command related docker volumes ==> docker volume --help
+Commands:
+  create      Create a volume
+  inspect     Display detailed information on one or more volumes
+  ls          List volumes
+  prune       Remove all unused local volumes
+  rm          Remove one or more volumes
+
+2. To check list of volume ==> docker volume ls
+3. To create volume ==> docker volume create vli1
+4. To inspect docker volume ==> docker volume inspect vli1
+5 you can create volume while create the container ==> docker run --name second-container -v vol1:/app -p 9000:80 -d nginx:perl
+6.How to go inside the container ==> docker exec -it 5877b0a6c5c0 /bin/bash and exit from container ==> exit
+
+Docker Network
+1. To know docker networking command ==> docker network --help
+Commands:
+  connect     Connect a container to a network
+  create      Create a network
+  disconnect  Disconnect a container from a network
+  inspect     Display detailed information on one or more networks
+  ls          List networks
+  prune       Remove all unused networks
+  rm          Remove one or more networks
+2.To print existing docker network ==> docker network ls
+3.To create my new network ==> docker network create mynetwork
+4.To find details of network ==> docker network inspect mynetwork
+5.To connect the mynetwork with any container ==> docker network connect mynetwork first-container
+6.Create network while creating the conatiner ==> docker run --name second-container -v vol1:/app --network mynetwork -p 9000:80 -d nginx:perl
+7.How to connect one docker to antorher
+   a. First go to one of the container by ==> docker exec -it 5877b0a6c5c0 /bin/bash
+   b. Then run following command
+      ==> apt-get update -y
+      ==> apt-get install iputils-ping
+      ==> ping second-container
+      ==> exit
+
+Custom Docker Images
+1. Create docker file ==> nano dockerfile
+2. Paste below text in dockerfile
+FROM ubuntu
+Maintainer "Anand"
+RUN apt-get update
+RUN apt-get install vim -y
+CMD /bin/echo "Hello from Docker" 
+3. Now build the image by ==> docker build -t anandlilhare/ubunto-image .
+4. To share this image in dockur hub. First login to docker
+5. Push docker in docker hub ==> docker push anandlilhare/ubunto-image:latest
+
+Docker Compose
+1. Install docker compose
+  ==>sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+2. Give permission to docker compose file:
+ ==>  sudo chmod +x /usr/local/bin/docker-compose
+3. Check version
+==>docker-compose version
+4. Create a network that we use in yml file
+5. To run the compose ==> docker-compose up
+6. To stup the compose ==> docker-compose down
+commands
+build              Build or rebuild services
+  bundle             Generate a Docker bundle from the Compose file
+  config             Validate and view the Compose file
+  create             Create services
+  down               Stop and remove containers, networks, images, and volumes
+  events             Receive real time events from containers
+  exec               Execute a command in a running container
+  help               Get help on a command
+  images             List images
+  kill               Kill containers
+  logs               View output from containers
+  pause              Pause services
+  port               Print the public port for a port binding
+  ps                 List containers
+  pull               Pull service images
+  push               Push service images
+  restart            Restart services
+  rm                 Remove stopped containers
+  run                Run a one-off command
+  scale              Set number of containers for a service
+  start              Start services
+  stop               Stop services
+  top                Display the running processes
+  unpause            Unpause services
+  up                 Create and start containers
+  version            Show the Docker-Compose version information
+
+
+Docker-Swarm
+1. Run this command to master node ==>docker swarm init
+2. Run this command to worker node ==> docker swarm join --token SWMTKN-1-0slewj7lrh6zc6nblj82vqzkhm3y6rv3kc01b485uxv06z8hrj-46d6epst5x0um4miqyawxcmhv 172.31.43.209:2377
+3. To check worker node list from master node ==> 
+4. To check any service running on the master node ==> docker service ls
+5. docker ps -a
+docker service create --name nginxweb -p 8081:80 nginx
+docker service create --name nginxweb1 -p 8082:80 --replicas 5 nginx
+docker service ps nginxweb1
+docker service scale nginxweb1=7
+docker service scale nginxweb1=1
+docker node update --availability drain docker
+docker node update --availability active docker
+docker node ls
+
+
+
+
+
+
