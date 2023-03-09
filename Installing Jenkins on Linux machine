@@ -7,8 +7,7 @@
 
 1. First check java install or not
 2.Install Jenkis
-==>sudo wget -O /etc/yum.repos.d/jenkins.repo \
-    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+==>sudo wget -O /etc/yum.repos.d/jenkins.repo \https://pkg.jenkins.io/redhat-stable/jenkins.repo
 
 ==> sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
 ==> sudo yum upgrade
@@ -19,7 +18,7 @@
 3. Get initial password
 ==> cat /var/lib/jenkins/secrets/initialAdminPassword
 4. start Jenkins on web: <public-ip>:8080
-   ex: https://65.1.92.203:8080/
+   ex: https://172.31.35.129:8080/
    Note- apt-get install kdiff3
 5.You can check the status of the Jenkins service using the command:
 ==> sudo systemctl status jenkins
@@ -50,7 +49,7 @@ Jenkins master slave:
    1. Create user ==> useradd jenkinsadmin
    2. add password ==> passwd jenkinsadmin
    3. Give some power to user ==> visudo -> jenkinsadmin ALL=(ALL)    NOPASSWD: ALL
-   4. Now go to cd /etc/ssh ==> open it ==> nano sshd_config -> make it PasswordAuthentication yes ==> 
+   4. Now go to cd /etc/ssh ==> open it ==> nano sshd_config -> make it PasswordAuthentication yes ==>  and ==> service sshd reload/service sshd restart
    5. Now login with jenkinadmin user ==> su jenkinadmin ==>cd
    6. Generate key ==> ssh-keygen
    master - ssh -i "devops-val.pem" ec2-user@ec2-43-204-238-67.ap-south-1.compute.amazonaws.com
@@ -71,7 +70,7 @@ Now we need to set connection in front(Jenkins web side)
 1. Go to Manage jenkin => Manage nodes and clouds.
 2. Click on new node and give the name of node.
 3. add number of excuter and add remote root directory with slave machine(to find path just write pwd ex: /home/jenkinadmin)
-4. Lunch method is Launch agen via SSH
+4. Lunch method is Launch agen via SSH , add host name as ip address of worker node and add creditional 
 5. Select Manually trusted key Verification Strategy in Host Key Verification Strategy
 6. Save and run the job with slave node
 

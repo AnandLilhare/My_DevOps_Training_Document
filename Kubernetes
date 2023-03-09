@@ -1,0 +1,71 @@
+Kubernetes
+
+Kubernetes core concept:
+
+1. Pod
+2. Controller
+3. Services
+4. Volumes
+5. ConfigMap and Screts
+6. Deployement
+7. StatefulSet
+
+ Container -> Pod ->Relica set ->Deployement->Services
+
+example: 
+
+
+ apiVersion: apps/v1
+
+kind: Deployment -----------Deployement
+
+metadata:
+
+  name: nginx-deployment
+
+  labels:
+
+    app: nginx
+
+spec:----------------- replica set
+
+  replicas: 3
+
+  selector:
+
+    matchLabels:
+
+      app: nginx
+
+  template: ------------- POD
+
+    metadata:
+
+      labels:
+
+        app: nginx
+
+    spec:
+
+      containers:----------Container
+
+      - name: nginx
+
+        image: nginx:1.14.2
+
+        ports:
+
+        - containerPort: 80
+--------------------------------
+To practis kubernet just open kubernetive intractive shell
+https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-interactive/
+==> minikube start
+1. Get kubernetive version ==> kubectl version
+2. Show the list ==> kubectl get all
+3. Create deployement yml ==> nano deployement.yml and add above containe file
+4. run this command ==>kubectl apply -f deployement.yml
+5.To check pod detail ==> kubectl describe pod/nginx-deployment-66b6c48dd5-vg952
+6.To expose the pod ==>kubectl expose deployment nginx-deployment --port=80 --type= LoadBalancer
+==> kubectl expose deployment nginx-deployment --port=80 --type=LoadBalancer
+7. Get service ==> kubectl get svc
+8. kubectl delete service nginx-deployment

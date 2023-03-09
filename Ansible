@@ -1,0 +1,72 @@
+Ansible
+
+1. To install Ansible on machine ==> sudo amazon-linux-extras install ansible2
+2. To check Ansible version ==> ansible --version
+3. You can check ansible config file ==> cd /etc/ansible/
+4. You can add worker machine in host file
+   [test-server]
+   172.31.0.194
+   172.31.6.77
+5. Create new user, becouse it is not recommend to operation at root user
+  useradd ansadmin - Add a new user 
+  passwd ansadmin - Assign password to ne user
+  visudo - Change permission [ansadmin ALL=(ALL)       NOPASSWD: ALL]
+  cd /etc/ssh
+  nano sshd_config (PasswordAuthentication yes)
+  service sshd reload
+ Smillar set up will need to on client or worker machine.
+6. Now login to ansadmin user
+  ==> su ansadmin
+  ==> cd
+  ==> ssh-keygen
+7. Copy to ssh publib key to worker node
+    ==> ssh-copy-id ansadmin@172.31.6.77
+    ==> ssh-copy-id ansadmin@172.31.0.194
+8. Now we can connect worker node by using ansible command
+   - go to cd /etc/ansible/
+   - ansible all -m ping OR ansible test-server -i hosts -m ping
+9. Copy from master to worker node
+   ==> ansible test-server -m copy -a "src=/etc/ansible/sample.txt dest=/home/ansadmin"
+10. Clear details of worker node ==> ansible test-server -m setup
+11. Create a folder to worker node ==> ansible test-server -m file -a "dest=/home/ansadmin/test-file state=directory"
+12. Delete a folder from worker node ==> ansible test-server -m file -a "dest=/home/ansadmin/test-file state=absent"
+13. To check uptime of worker node ==> ansible test-server -m shell -a "uptime"
+14. Ansible module ==> https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html
+15. Install a software (httpd) on remote machine ==> ansible test-server -m yum -a "name=httpd state=present" -b
+16. start the service on worker node ==> ansible test-server -m service -a "name=httpd state=started" -b 
+17. Stop tge service ==> ansible test-server -m service -a "name=httpd state=stopped" -b 
+18. Create a new user ==> ansible test-server -m user -a "name=vikas" -b
+19. delete the user ==> ansible test-server -m user -a "name=vikas state=absent" -b
+
+Playbook
+-------
+1. yaml syntax validator = https://www.yamllint.com/
+2. Create yml file in ansible folder ==> nano copy.yaml
+3. Now run playbook ==> ansible-playbook copy.yaml
+4. You can limit to server ==> ansible-playbook copy.yml --limit test-server
+5. To check syntac check of paybook yml file ==> ansible-playbook httpd.yml --syntax-check
+
+Ansible Roles:
+1. Go to roles folder and run this command ==>sudo ansible-galaxy init install
+2. To check tree ==> sudo ansible-galaxy init install
+3. now got to task of install ==> cd install/task/
+4. Create new playbook ==>
+---
+- hosts: test-server
+  remote_user: ansadmin
+
+  roles:
+    - install
+    - copy
+
+Ansible dynamic ip
+1. Go to that url https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_ec2_inventory.html
+2. Now install plugin as per docuement ==> sudo ansible-galaxy collection install amazon.aws
+3. Now create yml file as document naming conventsion ==> sudo nano asw_ec2.yml
+4. Install required software
+    - pip --version
+    - sudo yum install pip -y
+    - pip install boto3
+5. Now update yml file
+   - 
+

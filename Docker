@@ -3,10 +3,10 @@ Docker
 1. First install docker in machine  ==> yum install docker -y
 2. Check docker version ==> docker --version
 3. Check docker all command ==> docker --help
-4. To check status of docker services ==> service docker status
-5. To start docker services ==> service docker start
+4. To check status of docker services ==> service docker status and service docker start
+5. To start docker services ==> service docker start ==> systemctl enable docker
 6. How to install image form docker hub ==> docker pull nginx:1.23.3-alpine
-7. Check docker image ==> docker images, ==>docker image ls
+7. Check docker image ==> docker images, ==>docker image ls, To remove image ==> docker rmi <image id>
 8. To download latest image ==> docker pull nginx:latest
 9. To check how many docker process is running ==> docker ps -a
 10 How to run image
@@ -37,7 +37,7 @@ Commands:
 2. To check list of volume ==> docker volume ls
 3. To create volume ==> docker volume create vli1
 4. To inspect docker volume ==> docker volume inspect vli1
-5 you can create volume while create the container ==> docker run --name second-container -v vol1:/app -p 9000:80 -d nginx:perl
+5 you can create volume while create the container ==> docker run --name my-ontainer -v vol1:/app -p 9000:80 -d devopsedu/webapp:latest
 6.How to go inside the container ==> docker exec -it 5877b0a6c5c0 /bin/bash and exit from container ==> exit
 
 Docker Network
@@ -71,7 +71,7 @@ Maintainer "Anand"
 RUN apt-get update
 RUN apt-get install vim -y
 CMD /bin/echo "Hello from Docker" 
-3. Now build the image by ==> docker build -t anandlilhare/ubunto-image .
+3. Now build the image by ==> docker build -t anandlilhare/devopsedu/webapp
 4. To share this image in dockur hub. First login to docker
 5. Push docker in docker hub ==> docker push anandlilhare/ubunto-image:latest
 

@@ -1,0 +1,36 @@
+Terraform
+==> https://registry.terraform.io/browse/providers
+1. To check version of terraform ==> terraform --version
+2. To install terraform
+  - sudo yum install -y yum-utils
+  - yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+  - sudo yum -y install terraform
+3. https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+5. To understand cidr ranage ==> https://cidr.xyz/
+6. Demo example for vpc with terraform
+  - Creat a folder mkdir vpc-terraform
+  - Create main.tf file and phate scirpt
+    resource "aws_vpc" "demo" {
+  cidr_block       = "10.0.0.0/16"
+  instance_tenancy = "default"
+
+  tags = {
+    Name = "edureka-demo-vpc"
+  }
+}
+  - Now need to create provider.tf file and to provide weather it is aws, azur, google clould
+   provider "aws" {
+  region     = "ap-south-1"
+}
+- Now use this command ==> terraform init
+- To do code formate you can use == terraform fmt
+- To check syntax you can use ==> terrafrom validate
+- To run the terraform script ==> terrafrom plan
+7.Creat configure file in terraform
+  - aws configure 
+  write key and password here
+  - you can check configure file in cd .aws/configure
+8.Create IMF in aws
+  - 
+9.Now do the ==> terraform apply
+10. To destory VPC ==> terraform destroy --auto-approve
